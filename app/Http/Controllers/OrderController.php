@@ -69,7 +69,7 @@ class OrderController extends Controller
                 'name'         => 'required|string',
                 'phone'        => 'required|string',
                 'country'      => 'required|string',
-                'state'        => 'nullable|string',
+                'state'        => 'required|string',
                 'city'         => 'required|string',
                 'zip_code'     => 'required|string',
                 'address_line' => 'required|string',
