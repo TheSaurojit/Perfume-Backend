@@ -4,7 +4,7 @@
 @section('body-section')
     <div class="row">
 
-        <div class="container py-4">
+        {{-- <div class="container py-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4>Order Dashboard</h4>
 
@@ -67,7 +67,7 @@
 
                 
             </div>
-        </div>
+        </div> --}}
 
     </div>
 @endsection
