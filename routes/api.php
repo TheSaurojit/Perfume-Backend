@@ -17,7 +17,7 @@ Route::get('/products', fn () =>
     Product::with(['singleImage', 'multipleImages'])->where('status','published')->latest()->get()
 );
 
-Route::get('/products/{productId}', function (string $productId) {
+Route::get('/product/{productId}', function (string $productId) {
 
      $product = Product::with(['singleImage', 'multipleImages'])
         ->where('id', $productId)
