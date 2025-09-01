@@ -62,6 +62,13 @@
 
                 <p><strong>Address:</strong> {{ $order->address_line }}</p>
 
+                <h5 class="mt-4">Payment Screenshot</h5>
+
+                <div class="mb-3">
+                    <img src="{{ $order->payment_screenshot }}" alt="Product Image" class="img-fluid"
+                        style="max-width: 200px;">
+                </div>
+
 
                 {{-- Product Info --}}
                 <h5 class="mt-4">Product Info</h5>
