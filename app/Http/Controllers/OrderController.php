@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\FileUploader;
+use App\Mail\OrderMail;
 use App\Models\Order;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 
@@ -46,7 +49,7 @@ class OrderController extends Controller
     {
 
         $data = $request->validate([
-            'status' => 'required' ,
+            'status' => 'required',
             'payment_status' => 'required'
         ]);
 
@@ -105,6 +108,15 @@ class OrderController extends Controller
                 'payment_status' => 'unverified',
 
             ]);
+
+
+            $deliveryDate = now()->addDays(7);
+
+            $adminMail = User::find(1)?->email ;
+
+            Mail::to($order->email)
+                ->cc($adminMail)
+                ->send(new OrderMail($order, $deliveryDate));
 
             return response()->json(['message' => 'Order Created', 'data' => $order]);
         } catch (\Illuminate\Validation\ValidationException $e) {

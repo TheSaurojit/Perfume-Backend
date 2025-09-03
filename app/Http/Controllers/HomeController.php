@@ -14,13 +14,6 @@ class HomeController extends Controller
     public function home(Request $request)
     {
 
-        // $details = [
-        //     'name' => 'John Doe',
-        //     'order_id' => 'ORD-123456',
-        //     'amount' => '59.99',
-        // ];
-
-        // Mail::to('saurojitkarmakar947@gmail.com')->send(new OrderMail($details));
 
         $month = $request->get('month', now()->format('m'));
         $year = now()->format('Y');

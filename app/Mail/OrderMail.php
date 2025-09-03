@@ -12,14 +12,16 @@ class OrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $details;
+    public $order;
+    public $deliveryDate ;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($details)
+     public function __construct($order, $deliveryDate)
     {
-        $this->details = $details;
+        $this->order = $order;
+        $this->deliveryDate = $deliveryDate ;
     }
 
     /**
@@ -40,7 +42,7 @@ class OrderMail extends Mailable
         return new Content(
             view: 'emails.order',  // 👈 change to your actual blade file
             with: [
-                'details' => $this->details
+                'order' => $this->order
             ],
         );
     }
