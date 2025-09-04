@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Helpers\FileUploader;
 use App\Mail\OrderMail;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -62,70 +64,90 @@ class OrderController extends Controller
         return view('pages.orders.invoice', compact('order'));
     }
 
+
     public function createOrder(Request $request)
     {
-
         try {
+            // ✅ Validate request
             $validated = $request->validate([
-                'product_id'   => 'required|exists:products,id',
-                'email'        => 'required|email',
-                'name'         => 'required|string',
-                'phone'        => 'required|string',
-                'country'      => 'required|string',
-                'state'        => 'required|string',
-                'city'         => 'required|string',
-                'zip_code'     => 'required|string',
-                'address_line' => 'required|string',
+                'product_id'         => 'required|exists:products,id',
+                'email'              => 'required|email',
+                'name'               => 'required|string',
+                'phone'              => 'required|string',
+                'country'            => 'required|string',
+                'state'              => 'required|string',
+                'city'               => 'required|string',
+                'zip_code'           => 'required|string',
+                'address_line'       => 'required|string',
                 'payment_screenshot' => 'required|image',
-                'quantity'     => 'required|integer|min:1',
-                'price'        => 'required|numeric|min:0',
-                'total_price'  => 'required|numeric|min:0',
+                'quantity'           => 'required|integer|min:1',
+                'price'              => 'required|numeric|min:0',
+                'total_price'        => 'required|numeric|min:0',
             ]);
 
+            // ✅ Wrap everything inside a transaction
+            $order = DB::transaction(function () use ($validated) {
 
-            do {
-                $randomNumber = mt_rand(100000, 999999);
-                $orderId = 'ORD-' . $randomNumber;
-            } while (Order::where('id', $orderId)->exists());
+                $product = Product::lockForUpdate()->find($validated['product_id']); // prevent race conditions
 
+                if ($validated['quantity'] > $product->quantity) {
+                    throw new Exception('Product out of stock');
+                }
 
-            $order = Order::create([
-                'id' => $orderId,
-                'product_id' => $validated['product_id'],
-                'email' => $validated['email'],
-                'name' => $validated['name'],
-                'phone' => $validated['phone'],
-                'country' => $validated['country'],
-                'state' => $validated['state'],
-                'city' => $validated['city'],
-                'zip_code' => $validated['zip_code'],
-                'address_line' => $validated['address_line'],
-                'payment_screenshot' => FileUploader::upload($validated['payment_screenshot']),
-                'quantity' => $validated['quantity'],
-                'price' => $validated['price'],
-                'total_price' => $validated['total_price'],
-                'status' => 'pending',
-                'payment_status' => 'unverified',
+                // ✅ Generate unique order_number
+                do {
+                    $randomNumber = mt_rand(100000, 999999);
+                    $orderID = 'ORD-' . $randomNumber;
+                } while (Order::where('id', $orderID)->exists());
 
-            ]);
+                // ✅ Decrease product stock
+                $product->decrement('quantity', $validated['quantity']);
 
+                // ✅ Store order
+                $order = Order::create([
+                    'id'                 => $orderID,
+                    'product_id'         => $validated['product_id'],
+                    'email'              => $validated['email'],
+                    'name'               => $validated['name'],
+                    'phone'              => $validated['phone'],
+                    'country'            => $validated['country'],
+                    'state'              => $validated['state'],
+                    'city'               => $validated['city'],
+                    'zip_code'           => $validated['zip_code'],
+                    'address_line'       => $validated['address_line'],
+                    'payment_screenshot' => FileUploader::upload($validated['payment_screenshot']),
+                    'quantity'           => $validated['quantity'],
+                    'price'              => $validated['price'],
+                    'total_price'        => $validated['total_price'],
+                    'status'             => 'pending',
+                    'payment_status'     => 'unverified',
+                ]);
 
+                return $order;
+            });
+
+            // ✅ Send order confirmation mail
             $deliveryDate = now()->addDays(7);
-
-            $adminMail = User::find(1)?->email ;
+            $adminMail = User::find(1)?->email;
 
             Mail::to($order->email)
                 ->cc($adminMail)
                 ->send(new OrderMail($order, $deliveryDate));
 
-            return response()->json(['message' => 'Order Created', 'data' => $order]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Order created successfully',
+                'data'    => $order
+            ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
+                'success' => false,
                 'message' => 'Validation failed',
                 'errors'  => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
+                'success' => false,
                 'message' => 'Failed to create order',
                 'errors'  => $e->getMessage(),
             ], 422);
