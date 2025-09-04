@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://www.maisontatiana7worldwide.com'],
+    'allowed_origins' => ['https://www.maisontatiana7worldwide.com','https://maisontatiana7worldwide.com'],
 
     'allowed_origins_patterns' => [],
 
