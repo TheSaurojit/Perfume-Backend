@@ -87,7 +87,7 @@
 
                 {{-- Payment Info --}}
 
-                <p><strong>Total Amount:</strong> €{{ number_format(($order->total_price + 35), 2) }}</p>
+                <p><strong>Total Amount:</strong> €{{ number_format($order->total_price , 2) }}</p>
 
 
             </div>

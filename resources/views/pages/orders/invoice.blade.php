@@ -5268,20 +5268,20 @@
                                                     €{{ number_format($order->quantity * $order->price, 2) }}
                                                 </td>
                                             </tr>
-                                            {{-- <tr class="tax-row bottom-border">
+                                            <tr class="tax-row bottom-border">
                                                 <td
                                                     class="font-md color-light-black"
                                                 >
-                                                    Tax
+                                                   Shipping Tax
                                                     
                                                     
                                                 </td>
                                                 <td
                                                     class="font-md-grey color-grey text-right"
                                                 >
-                                                    €{{ number_format($order->tax, 2) }}
+                                                    €{{ number_format(35, 2) }}
                                                 </td>
-                                            </tr> --}}
+                                            </tr>
                                             <tr class="invo-grand-total">
                                                 <td
                                                     class="font-18-700 color-purple pt-20"
