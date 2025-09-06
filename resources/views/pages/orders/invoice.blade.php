@@ -5238,10 +5238,10 @@
                                             </td>
 
                                             <td class="font-sm text-center">
-                                                {{ $order->quantity }} x ${{ $order->price }}
+                                                {{ $order->quantity }} x €{{ $order->price }}
                                             </td>
                                             <td class="font-sm text-right">
-                                               ${{ number_format($order->quantity * $order->price, 2) }}
+                                               €{{ number_format($order->quantity * $order->price, 2) }}
 
                                             </td>
                                         </tr>
@@ -5265,7 +5265,7 @@
                                                 <td
                                                     class="font-md-grey color-grey text-right"
                                                 >
-                                                    ${{ number_format($order->quantity * $order->price, 2) }}
+                                                    €{{ number_format($order->quantity * $order->price, 2) }}
                                                 </td>
                                             </tr>
                                             {{-- <tr class="tax-row bottom-border">
@@ -5279,7 +5279,7 @@
                                                 <td
                                                     class="font-md-grey color-grey text-right"
                                                 >
-                                                    ${{ number_format($order->tax, 2) }}
+                                                    €{{ number_format($order->tax, 2) }}
                                                 </td>
                                             </tr> --}}
                                             <tr class="invo-grand-total">
@@ -5291,7 +5291,7 @@
                                                 <td
                                                     class="font-18-500 color-light-black text-right pt-20"
                                                 >
-                                                    ${{ number_format($order->total_price , 2) }}
+                                                     €{{ number_format($order->total_price , 2) }}
                                                 </td>
                                             </tr>
                                         </tbody>

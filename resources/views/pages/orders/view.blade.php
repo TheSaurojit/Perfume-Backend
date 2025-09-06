@@ -81,13 +81,13 @@
                 <p><strong>Product ID:</strong> {{ $order->product_id }}</p>
                 <p><strong>Product Name:</strong> {{ $order->product->title }}</p>
                 <p><strong>Quantity:</strong> {{ $order->quantity }}</p>
-                <p><strong>Price per Item:</strong> ${{ number_format($order->price, 2) }}</p>
-                {{-- <p><strong>Tax:</strong> ${{ number_format($order->tax, 2) }}</p> --}}
+                <p><strong>Price per Item:</strong> €{{ number_format($order->price, 2) }}</p>
+                {{-- <p><strong>Tax:</strong> €{{ number_format($order->tax, 2) }}</p> --}}
 
 
                 {{-- Payment Info --}}
 
-                <p><strong>Total Amount:</strong> ${{ number_format($order->total_price, 2) }}</p>
+                <p><strong>Total Amount:</strong> €{{ number_format($order->total_price, 2) }}</p>
 
 
             </div>
