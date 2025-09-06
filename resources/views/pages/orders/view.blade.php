@@ -82,7 +82,7 @@
                 <p><strong>Product Name:</strong> {{ $order->product->title }}</p>
                 <p><strong>Quantity:</strong> {{ $order->quantity }}</p>
                 <p><strong>Price per Item:</strong> €{{ number_format($order->price, 2) }}</p>
-                {{-- <p><strong>Tax:</strong> €{{ number_format($order->tax, 2) }}</p> --}}
+                <p><strong>Shipping Tax:</strong> €{{ number_format(35, 2) }}</p>
 
 
                 {{-- Payment Info --}}
