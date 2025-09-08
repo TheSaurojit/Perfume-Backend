@@ -32,5 +32,5 @@ Route::post('/contact-us',[ContactUsController::class,'store']) ;
 
 Route::post('/create-order',[OrderController::class,'createOrder']) ;
 
-Route::get('/bank-details',fn () => Setting::find(1) ?? (object)[]  ) ;
+// Route::get('/bank-details',fn () => Setting::find(1) ?? (object)[]  ) ;
 

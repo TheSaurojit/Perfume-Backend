@@ -226,12 +226,12 @@
                             </a>
                         </li>
                        
-                         <li>
+                         {{-- <li>
                             <a href="{{ route('settings') }}">
                                 <i class="bx bx-user-circle"></i>
                                 <span key="t-dashboards">Settings </span>
                             </a>
-                        </li>
+                        </li> --}}
                     
 
                         <li>
